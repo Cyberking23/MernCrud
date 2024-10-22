@@ -19,6 +19,16 @@ function TableComponent() {
         fetchUsers();
     }, []);
 
+    const handleDelete = (id) => {
+        axios.delete('http://localhost:4000/api/delete/' + id)
+            .then(res => {
+                console.log(res);
+                // Actualiza el estado de los usuarios después de la eliminación
+                setUsers(users.filter(user => user._id !== id));
+            })
+            .catch(err => console.log(err));
+    };
+
     return (
         <div>
             <Link to="/User"><button className="btn btn-primary mb-3">Añadir Datos</button></Link>
@@ -29,6 +39,7 @@ function TableComponent() {
                         <th>Lastname</th>
                         <th>Email</th>
                         <th>Phone</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,8 +52,8 @@ function TableComponent() {
                                     <td>{user.email}</td>
                                     <td>{user.phone}</td>
                                     <td>
-                                        <Link to ={`/Update/${user._id}`} className='btn btn-success'>Update</Link>
-                                            <button className='btn btn-danger'>Delete</button>
+                                        <Link to={`/Update/${user._id}`} className='btn btn-success'>Update</Link>
+                                        <button className='btn btn-danger' onClick={() => handleDelete(user._id)}>Delete</button>
                                     </td>
                                 </tr>
                             ))

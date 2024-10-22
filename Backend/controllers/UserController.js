@@ -46,19 +46,35 @@ export const UpdateUser= async(req,res)=>{
     }
 }
 
+// Obtener usuario por ID
+// Obtener usuario por ID
+export const GetUserById = async (req, res) => {
+    try {
+        const user = await UserModels.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        res.status(200).json({ success: true, user });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
+
+
 //Delte
 export const DeleteUser = async(req,res)=>{
     try{
-        const UserId= req.params.id
-        const DeletedUser = await UserModels.findOneAndDelete(UserId)
-        if(!DeleteUser){
-            return res.status(404).json({success:false,message:"User not found"})
+        const UserId = req.params.id;
+        const DeletedUser = await UserModels.findOneAndDelete(UserId);
+        if(!DeletedUser){ // Cambia a DeletedUser
+            return res.status(404).json({success:false,message:"User not found"});
         }
-        res.status(200).json({success:true,message:'User deleted succesffully'})
+        res.status(200).json({success:true,message:'User deleted successfully'});
     }catch(e){
-        console.log(e)
-        return res.status(500).json({success:false,message:"Internal Server Error"})
+        console.log(e);
+        return res.status(500).json({success:false,message:"Internal Server Error"});
     }
-
 }
+
 
